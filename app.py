@@ -1,17 +1,33 @@
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
+import os
+from os.path import abspath, dirname 
 import altair as alt
+
+os.chdir(dirname(abspath(__file__)))
+
+translate = {'ozone': 'ozon', 'sulfur dioxide': 'schwefeldioxid', 'air temperature': 'lufttemperatur'
+             , 'wind speed': 'windgeschwindigkeit', 'humidity': 'luftfeuchtigkeit', 'nitrogen dioxide': 'stickstoffdioxid', 
+             'nitrogen oxides': 'stickoxide', 'particulate matter': 'feinstaub', 'carbon monoxide': 'kohlenmonoxid'}
+
+unit = {("lufttemperatur",) : "°C", "windgeschwindigkeit": "km/h", 
+        ("ozon", "schwefeldioxid", "stickstoffdioxid","stickoxide", "feinstaub"): "µg/m³",
+        ("kohlenmonoxid",): "mg/m³", ("luftfeuchtigkeit",): "%"}
 
 data = pd.read_pickle("data/dataframe.pkl")
 
 st.markdown("# Bart's :penguin: data :rainbow[assignment]!")
 
+
 st.markdown("### A short :blue[summary:]")
-st.markdown("""This project (my not exactely :strawberry: Pi) automatically downloads air quality, :thermometer: and humidty data from Vienna and Mödling.\
-            This data is then converted into 2 csv files with automated Bash/awk scripts,
-            cleaned up a little more with Python and uploaded to this Streamlit app.
-            Mödling (my home) is just outside of Vienna. Does it have better air-quality?""")
+st.markdown(":blue[Mödling] (my home) is just outside of :red[Vienna]. Does it have better air-quality?")
+st.markdown("The assignment consists of:")
+st.markdown("* Bash scripts to download air quality, :thermometer: and humidty data (curl)")
+st.markdown("* Bash and awk scripts to format into an easy to read csv-file for Pandas")
+st.markdown("* Python script to deal with N/A values and resample the data")
+st.markdown("* The Streamlit app :balloon:")
+
 
 with st.sidebar:
 
@@ -28,8 +44,16 @@ with st.sidebar:
 
     option = st.selectbox(
     "Select the item you wish to view",
-    data.columns
+    translate.keys()
     )
+
+val = option
+option = translate[val]
+for k in unit:
+    if option in k:
+        m_unit = unit[k]
+        break
+
 
 end_date = start_date + timedelta(days=1)
 
@@ -37,15 +61,16 @@ data_temp = data[option].unstack(level=0)
 data_temp = data_temp.loc[start_date:end_date]
 data_temp = data_temp[:-1]
 
-st.subheader(f"{option.title()}: Mödling <-> Wien")
-st.line_chart(data_temp, y=["moedling", "vienna"])
+st.subheader(f"{val.title()} {m_unit}: Mödling <-> Vienna")
+st.line_chart(data_temp, y=["moedling", "vienna"], color=["#00008B", "#FF0000"])
 
 st.divider()
 
-st.caption(f"The actual data for {option.title()}")
+st.caption(f"Actual data for {val.title()} in {m_unit}")
 st.dataframe(data_temp)
 
 st.divider()
 
 st.text("Please note that the analytics was not the main part of this assignment.")
-st.text("Some values were missing and were backfilled.")
+st.text("Missing values were handled by simple backfilling.")
+st.write("Data retrieved from [Opendata Austria](https://www.data.gv.at)")
