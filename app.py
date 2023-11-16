@@ -8,12 +8,13 @@ data = pd.read_pickle("data/dataframe.pkl")
 #md = pd.read_pickle("data/moedling.pkl")
 #md = md.set_index("date")
 
-st.markdown("# :flag-be: Bart's :penguin: data :rainbow[project]!")
+st.markdown("# Bart's :penguin: data :rainbow[assignment]!")
 
 st.markdown("### A short :blue[summary:]")
 st.markdown("""This project automatically downloads air quality, :thermometer: and humidty data from Vienna and Mödling.\
             This data is then converted into 2 csv files with automated Bash/awk scripts,
-            cleaned up a little more with Python and uploaded to this Streamlit app.""")
+            cleaned up a little more with Python and uploaded to this Streamlit app.
+            Mödling (my home) is just outside of Vienna. Does it have better air-quality?""")
 
 with st.sidebar:
 
