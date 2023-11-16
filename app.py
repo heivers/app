@@ -3,9 +3,9 @@ import pandas as pd
 from datetime import datetime, timedelta
 import altair as alt
 
-vie = pd.read_pickle("data/vienna.pkl")
+data = pd.read_pickle("data/dataframe.pkl")
 #vie = vie.set_index("date")
-md = pd.read_pickle("data/moedling.pkl")
+#md = pd.read_pickle("data/moedling.pkl")
 #md = md.set_index("date")
 
 st.markdown("# :flag-be: Bart's :penguin: data :rainbow[project]!")
@@ -26,38 +26,42 @@ with st.sidebar:
     start_date = st.date_input("Pick a date: ", min_value=min_date, max_value=max_date, value=max_date)
       
 
-    st.subheader("Select the chart items:")
+    st.subheader("Select :")
 
     option = st.selectbox(
-    "Select the 1st item you wish to view",
-    vie.columns
+    "Select the item you wish to view",
+    data.columns
     )
-
+#start_date = min_date #remove later
 end_date = start_date + timedelta(days=1)
 
-moed_temp = md.loc[start_date:end_date][[option]]
-wien_temp = vie.loc[start_date:end_date][[option]]
 
-moed_temp["moedling"] = moed_temp[option]
-wien_temp["wien"] = wien_temp[option]
+#moed_temp = md.loc[start_date:end_date][[option]]
+#wien_temp = vie.loc[start_date:end_date][[option]]
 
-chart1 = alt.Chart(moed_temp.reset_index()).mark_line().encode(
-    x= alt.X("date:T", title="date"),
-    y= alt.Y("moedling", title=option),
-    color=alt.value("blue"),
-)
+#moed_temp["moedling"] = moed_temp[option]
+#wien_temp["wien"] = wien_temp[option]
 
-chart2 = alt.Chart(wien_temp.reset_index()).mark_line().encode(
-    x= alt.X("date:T", title="date"),
-    y= alt.Y("wien", title=option),
-    color=alt.value("red"),
-    text = alt.Text(alt.value("Wien"))
-)
+# chart1 = alt.Chart(moed_temp.reset_index()).mark_line().encode(
+#     x= alt.X("date:T", title="date"),
+#     y= alt.Y("moedling", title=option),
+#     color=alt.value("blue"),
+# )
 
-chart1 + chart2
+# chart2 = alt.Chart(wien_temp.reset_index()).mark_line().encode(
+#     x= alt.X("date:T", title="date"),
+#     y= alt.Y("wien", title=option),
+#     color=alt.value("red"),
+#     text = alt.Text(alt.value("Wien"))
+# )
 
-# st.subheader("Mödling-Wien")
-# st.line_chart(moed_temp, y=[option, option2])
+# chart1 + chart2
+
+data_temp = data[option].unstack(level=0)
+data_temp = data_temp.loc[start_date:end_date]
+
+st.subheader(f"{option.title()}: Mödling <-> Wien")
+st.line_chart(data_temp, y=["moedling", "vienna"])
 # st.subheader("Vienna")
 # st.line_chart(wien_temp, y=[option, option2])
 
