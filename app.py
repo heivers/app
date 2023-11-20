@@ -31,14 +31,20 @@ st.markdown("* The Streamlit app :balloon:")
 
 with st.sidebar:
 
-    st.subheader("Select a date:")
+    st.subheader("Select a start date:")
 
     min_date = datetime(2023, 11, 12)
     today = datetime.now()
     max_date = datetime.date(today) - timedelta(days=1)
 
-    start_date = st.date_input("Pick a date: ", min_value=min_date, max_value=max_date, value=max_date)
-      
+    start_date = st.date_input("Pick a start date: ", min_value=min_date, max_value=max_date, value=max_date)
+
+    st.subheader("Select an end date:")
+
+    end_date = st.date_input("Pick an end date: ", min_value=min_date, max_value=max_date, value=max_date, key=42)
+
+    if start_date > end_date:
+        st.markdown("## :red[Start date cannot come after End Date!]")
 
     st.subheader("Select :")
 
@@ -55,7 +61,7 @@ for k in unit:
         break
 
 
-end_date = start_date + timedelta(days=1)
+end_date = end_date + timedelta(days=1)
 
 data_temp = data[option].unstack(level=0)
 data_temp = data_temp.loc[start_date:end_date]
