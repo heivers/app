@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
 import os
-from os.path import abspath, dirname 
-import altair as alt
+from os.path import abspath, dirname
 
 os.chdir(dirname(abspath(__file__)))
 
