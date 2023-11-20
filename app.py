@@ -44,7 +44,7 @@ with st.sidebar:
     end_date = st.date_input("Pick an end date: ", min_value=min_date, max_value=max_date, value=max_date, key=42)
 
     if start_date > end_date:
-        st.markdown("## :red[Start date cannot come after End Date!]")
+        st.markdown("## :red[Start Date cannot come after End Date!]")
 
     st.subheader("Select :")
 
