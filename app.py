@@ -47,6 +47,7 @@ with st.sidebar:
 
     st.subheader("Select :")
 
+    option = "air temperature"
     option = st.selectbox(
     "Select the item you wish to view",
     translate.keys()
