@@ -6,8 +6,7 @@ from os.path import abspath, dirname
 
 os.chdir(dirname(abspath(__file__)))
 
-translate = {'ozone': 'ozon', 'sulfur dioxide': 'schwefeldioxid', 'air temperature': 'lufttemperatur'
-             , 'wind speed': 'windgeschwindigkeit', 'humidity': 'luftfeuchtigkeit', 'nitrogen dioxide': 'stickstoffdioxid', 
+translate = {'air temperature' : 'lufttemperatur','ozone': 'ozon', 'sulfur dioxide': 'schwefeldioxid' , 'wind speed': 'windgeschwindigkeit', 'humidity': 'luftfeuchtigkeit', 'nitrogen dioxide': 'stickstoffdioxid', 
              'nitrogen oxides': 'stickoxide', 'particulate matter': 'feinstaub', 'carbon monoxide': 'kohlenmonoxid'}
 
 unit = {("lufttemperatur",) : "°C", "windgeschwindigkeit": "km/h", 
@@ -47,7 +46,6 @@ with st.sidebar:
 
     st.subheader("Select :")
 
-    option = "air temperature"
     option = st.selectbox(
     "Select the item you wish to view",
     translate.keys()
